@@ -6,7 +6,7 @@ const router = new Router();
 router.prefix('/users')
 // RESTful API
 
-// create
+// Register endpoint
 router.post('/', async (ctx) => {
   try {
     // check if used

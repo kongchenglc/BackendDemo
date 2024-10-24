@@ -8,28 +8,6 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 router.prefix('/auth')
 
-// Register endpoint
-router.post('/register', async (ctx) => {
-    const { username, password } = ctx.request.body;
-
-    try {
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
-        
-        // Create new user
-        const newUser = new User({
-            username,
-            password: hashedPassword,
-        });
-
-        await newUser.save();
-        ctx.body = { message: 'User registered successfully' };
-    } catch (err) {
-        ctx.status = 400;
-        ctx.body = { message: 'Registration failed', error: err.message };
-    }
-});
-
 // Login endpoint
 router.post('/login', async (ctx) => {
     const { username, password } = ctx.request.body;
@@ -47,24 +25,6 @@ router.post('/login', async (ctx) => {
     } catch (err) {
         ctx.status = 500;
         ctx.body = { message: 'Internal server error', error: err.message };
-    }
-});
-
-// Protected route
-router.get('/protected', async (ctx) => {
-    const token = ctx.request.headers['authorization']?.split(' ')[1];
-    if (!token) {
-        ctx.status = 401;
-        ctx.body = { message: 'No token provided' };
-        return;
-    }
-
-    try {
-        const decoded = jwt.verify(token, JWT_SECRET);
-        ctx.body = { message: `Welcome ${decoded.username}` };
-    } catch (err) {
-        ctx.status = 401;
-        ctx.body = { message: 'Invalid token' };
     }
 });
 
