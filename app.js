@@ -8,8 +8,9 @@ import koaStatic from 'koa-static'
 import cors from '@koa/cors'
 import mongoose from 'mongoose';
 
-import userInfo from './routes/userInfo.js'
 import loginRoutes from './routes/login.js';
+import userInfoRoutes from './routes/userInfo.js'
+import articleRoutes from './routes/article.js'
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -56,9 +57,9 @@ app.use(async (ctx, next) => {
 
 // Use login routes
 app.use(loginRoutes.routes(), loginRoutes.allowedMethods());
-
 // routes
-app.use(userInfo.routes(), userInfo.allowedMethods())
+app.use(userInfoRoutes.routes(), userInfoRoutes.allowedMethods())
+app.use(articleRoutes.routes()).use(articleRoutes.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {
