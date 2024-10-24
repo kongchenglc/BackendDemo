@@ -8,6 +8,28 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 router.prefix('/auth')
 
+// Register endpoint
+router.post('/register', async (ctx) => {
+    const { username, password } = ctx.request.body;
+
+    try {
+        // Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+        
+        // Create new user
+        const newUser = new User({
+            username,
+            password: hashedPassword,
+        });
+
+        await newUser.save();
+        ctx.body = { message: 'User registered successfully' };
+    } catch (err) {
+        ctx.status = 400;
+        ctx.body = { message: 'Registration failed', error: err.message };
+    }
+});
+
 // Login endpoint
 router.post('/login', async (ctx) => {
     const { username, password } = ctx.request.body;

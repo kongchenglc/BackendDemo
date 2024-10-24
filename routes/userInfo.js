@@ -6,27 +6,6 @@ const router = new Router();
 router.prefix('/users')
 // RESTful API
 
-// Register endpoint
-router.post('/', async (ctx) => {
-  try {
-    // check if used
-    const { username } = ctx.request.body
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      ctx.status = 409; // Conflict
-      ctx.body = { message: 'Username already exists' };
-      return;
-    }
-
-    const user = new User(ctx.request.body);
-    const savedUser = await user.save();
-    ctx.body = savedUser;
-  } catch (err) {
-    ctx.status = 400;
-    ctx.body = { message: 'Failed to create user', error: err.message };
-  }
-});
-
 // get all
 router.get('/', async (ctx) => {
   try {
