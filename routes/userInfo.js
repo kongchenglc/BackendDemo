@@ -10,11 +10,11 @@ router.prefix('/users')
 router.post('/', async (ctx) => {
   try {
     // check if used
-    const { email } = ctx.request.body
-    const existingUser = await User.findOne({ email });
+    const { username } = ctx.request.body
+    const existingUser = await User.findOne({ username });
     if (existingUser) {
       ctx.status = 409; // Conflict
-      ctx.body = { message: 'Email already exists' };
+      ctx.body = { message: 'Username already exists' };
       return;
     }
 
@@ -38,10 +38,10 @@ router.get('/', async (ctx) => {
   }
 });
 
-router.get('/:email', async (ctx) => {
-  const { email } = ctx.params;
+router.get('/:username', async (ctx) => {
+  const { username } = ctx.params;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (!user) {
       ctx.status = 404;
       ctx.body = { message: 'User not found' };
@@ -55,10 +55,10 @@ router.get('/:email', async (ctx) => {
 });
 
 // update
-router.put('/:email', async (ctx) => {
-  const { email } = ctx.params;
+router.put('/:username', async (ctx) => {
+  const { username } = ctx.params;
   try {
-    const user = await User.findOneAndUpdate({ email }, ctx.request.body, { new: true, runValidators: true });
+    const user = await User.findOneAndUpdate({ username }, ctx.request.body, { new: true, runValidators: true });
     if (!user) {
       ctx.status = 404;
       ctx.body = { message: 'User not found' };
@@ -71,10 +71,10 @@ router.put('/:email', async (ctx) => {
   }
 });
 
-router.delete('/:email', async (ctx) => {
-  const { email } = ctx.params;
+router.delete('/:username', async (ctx) => {
+  const { username } = ctx.params;
   try {
-    const user = await User.findOneAndDelete({ email });
+    const user = await User.findOneAndDelete({ username });
     if (!user) {
       ctx.status = 404;
       ctx.body = { message: 'User not found' };

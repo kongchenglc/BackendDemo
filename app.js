@@ -9,6 +9,7 @@ import cors from '@koa/cors'
 import mongoose from 'mongoose';
 
 import userInfo from './routes/userInfo.js'
+import loginRoutes from './routes/login.js';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -52,6 +53,9 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+
+// Use login routes
+app.use(loginRoutes.routes(), loginRoutes.allowedMethods());
 
 // routes
 app.use(userInfo.routes(), userInfo.allowedMethods())
